@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="exercise">
+        <item>Relax|120|gym_chill.jpg</item><!-- 0 -->
+        <item>back kicks|x10|back_kicks.gif</item> <!-- 0 -->
+        <item>bulgarian_split_squat|x10|bulgarian_split_squat.gif</item><!-- 1 -->
+        <item>cable_crossover|x10|cable_crossover.gif</item><!-- 2 -->
+        <item>cable_pullover|x10|cable_pullover.gif</item><!-- 3 -->
+        <item>chest press|x10|chest_press.gif</item><!-- 4 -->
+        <item>dumbbell triceps extension|x10|dumbbell_triceps_extension.gif</item><!-- 5 -->
+        <item>dumbbell rows|x10|dumbbell_rows.gif</item><!-- 5 -->
+        <item>grznar exercise|x10|grznar_exercise.gif</item><!-- 6 -->
+        <item>hacken squat|x10|hacken_squat.gif</item><!-- 7 -->
+        <item>hip adductors|x10|hip_adductors.gif</item><!-- 8 -->
+        <item>lateral raises|x10|lateral_raises.gif</item><!-- 9 -->
+        <item> leg press|x10|leg_press.gif</item><!-- 10 -->
+        <item> shoulder_press|x10|shoulder_press.gif</item><!-- 11 -->
+        <item> wide row|x10|wide_row.gif</item><!-- 12 -->
+    </string-array>
+
+    <string-array name="day_exercise">
+            <!-- fullbody trénink na každý den s pauzou -->
+            <item>3,0,12,0,1,0,4,0,11,0</item> <!-- den 1 -->
+            <item>7,0,2,0,5,0,9,0,6,0</item> <!-- den 2 -->
+            <item>10,0,8,0,3,0,12,0,13,0</item> <!-- den 3 -->
+            <item>1,0,14,0,2,0,5,0,11,0</item> <!-- den 4 -->
+            <item>4,0,3,0,6,0,9,0,10,0</item> <!-- den 5 -->
+            <item>5,0,12,0,1,0,13,0,8,0</item> <!-- den 6 -->
+            <item>14,0,2,0,3,0,11,0,4,0</item> <!-- den 7 -->
+        <item>4,0,3,0,6,0,9,0,10,0</item> <!-- den 8 -->
+        <item>5,0,12,0,1,0,13,0,8,0</item> <!-- den 9 -->
+        <item>14,0,2,0,3,0,11,0,4,0</item> <!-- den 10 -->
+
+    </string-array>
+
+</resources>
