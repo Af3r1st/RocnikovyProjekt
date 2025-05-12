@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="exercise">
-        <item>Relax|120|gym_chill.jpg</item><!-- 0 -->
+        <item>Relax|120|relax.gif</item><!-- 0 -->
         <item>back kicks|x10|back_kicks.gif</item> <!-- 0 -->
         <item>bulgarian_split_squat|x10|bulgarian_split_squat.gif</item><!-- 1 -->
-        <item>cable_crossover|x10|cable_crossover.gif</item><!-- 2 -->
-        <item>cable_pullover|x10|cable_pullover.gif</item><!-- 3 -->
+        <item>cable crossover|x10|cable_crossover.gif</item><!-- 2 -->
+        <item>cable pullover|x10|cable_pullover.gif</item><!-- 3 -->
         <item>chest press|x10|chest_press.gif</item><!-- 4 -->
         <item>dumbbell triceps extension|x10|dumbbell_triceps_extension.gif</item><!-- 5 -->
         <item>dumbbell rows|x10|dumbbell_rows.gif</item><!-- 5 -->
@@ -14,7 +14,7 @@
         <item>hip adductors|x10|hip_adductors.gif</item><!-- 8 -->
         <item>lateral raises|x10|lateral_raises.gif</item><!-- 9 -->
         <item> leg press|x10|leg_press.gif</item><!-- 10 -->
-        <item> shoulder_press|x10|shoulder_press.gif</item><!-- 11 -->
+        <item> shoulder press|x10|shoulder_press.gif</item><!-- 11 -->
         <item> wide row|x10|wide_row.gif</item><!-- 12 -->
     </string-array>
 

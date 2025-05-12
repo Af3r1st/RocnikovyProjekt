@@ -42,7 +42,7 @@ android {
 }
 
 dependencies {
-
+    implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.23")
     implementation ("androidx.fragment:fragment-ktx:1.6.2")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

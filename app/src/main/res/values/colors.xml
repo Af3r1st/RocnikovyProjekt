@@ -10,6 +10,7 @@
     <color name="blue">#076DFF</color>
     <color name="red">#EB0101</color>
     <color name="blue_dark">#015780</color>
+    <color name="btn_color">#1905F6</color>
 
 
 </resources>

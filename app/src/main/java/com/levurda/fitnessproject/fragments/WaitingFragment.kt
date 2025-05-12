@@ -1,10 +1,12 @@
 package com.levurda.fitnessproject.fragments
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,15 +16,18 @@ import com.levurda.fitnessproject.adapters.DaysAdapter
 import com.levurda.fitnessproject.adapters.ExerciseAdapter
 import com.levurda.fitnessproject.databinding.ExerciseListFragmentBinding
 import com.levurda.fitnessproject.databinding.FragmentDaysBinding
+import com.levurda.fitnessproject.databinding.WaitingFragmentBinding
 import com.levurda.fitnessproject.utils.FragmentManager
 import com.levurda.fitnessproject.utils.MainViewModel
+import com.levurda.fitnessproject.utils.TimeUtils
+
+const val COUNT_DOWN_TIMER = 11000L
 
 
-class ExerciseListFragment : Fragment() {
+class WaitingFragment : Fragment() {
 
-    private lateinit var binding: ExerciseListFragmentBinding
-    private val model: MainViewModel by activityViewModels()
-    private lateinit var adapter: ExerciseAdapter
+    private lateinit var binding: WaitingFragmentBinding
+    private lateinit var timer: CountDownTimer
 
 
 
@@ -30,39 +35,43 @@ class ExerciseListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = ExerciseListFragmentBinding.inflate(inflater, container, false)
+        binding = WaitingFragmentBinding.inflate(inflater, container, false)
         return binding.root
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        init()
-        model.mutableListExercise.observe(viewLifecycleOwner){
-          adapter.submitList(it)
-        }
+        binding.pBar.max = COUNT_DOWN_TIMER.toInt()
+        startTimer()
 
     }
 
-    private fun init() = with(binding) {
-        adapter = ExerciseAdapter(object : ExerciseAdapter.Listener {
-            override fun onClick(day: DayModel) {
-                // Tady zatím nic – můžeš později doplnit akci
+    private fun startTimer() = with(binding) {
+        timer = object : CountDownTimer(COUNT_DOWN_TIMER, 1){
+            override fun onTick(restTime: Long) {
+                tvTimer.text = TimeUtils.getTime(restTime)
+                pBar.progress = restTime.toInt()
             }
-        })
-        rcView.layoutManager = LinearLayoutManager(activity)
-        rcView.adapter = adapter
-        bStart.setOnClickListener{
-            FragmentManager.setFragment(WaitingFragment.newInstance(),activity as AppCompatActivity)
-        }
+
+            override fun onFinish() {
+                FragmentManager.setFragment(ExerciseFragment.newInstance(),
+                    activity as AppCompatActivity)
+            }
+
+        }.start()
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        timer.cancel()
+    }
 
 
 
     companion object {
 
         @JvmStatic
-        fun newInstance() = ExerciseListFragment()
+        fun newInstance() = WaitingFragment()
     }
 }

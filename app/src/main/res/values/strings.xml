@@ -3,4 +3,7 @@
     <string name="slogan">Road To dreambody</string>
     <string name="day">Day: </string>
     <string name="exercise">Exercises: </string>
+    <string name="waiting_message">The exercise will start in: </string>
+    <string name="start">Start </string>
+    <string name="next">Next </string>
 </resources>
