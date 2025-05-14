@@ -1,19 +1,15 @@
 package com.levurda.fitnessproject.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.levurda.fitnessproject.MyApp
 import com.levurda.fitnessproject.R
 import com.levurda.fitnessproject.adapters.DayModel
 import com.levurda.fitnessproject.adapters.DaysAdapter
@@ -24,10 +20,13 @@ import com.levurda.fitnessproject.utils.FragmentManager
 import com.levurda.fitnessproject.utils.MainViewModel
 
 class DaysFragment : Fragment(), DaysAdapter.Listener {
+
     private lateinit var adapter: DaysAdapter
     private lateinit var binding: FragmentDaysBinding
     private var ab: ActionBar? = null
-    private val model: MainViewModel by activityViewModels()
+
+    // ✅ Používáme správný globální model z MyApp
+    private lateinit var model: MainViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,33 +38,10 @@ class DaysFragment : Fragment(), DaysAdapter.Listener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        model = (requireActivity().application as MyApp).viewModel
         model.currentDay = 0
         initRcView()
-
-       /* requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.main_menu, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    R.id.reset -> {
-                        DialogManager.showDialog(
-                            activity as AppCompatActivity,
-                            R.string.reset_days_left_message,
-                            object : DialogManager.Listener {
-                                override fun onClick() {
-                                    model.pref?.edit()?.clear()?.apply()
-                                    adapter.submitList(fillDaysArray())
-                                }
-                            }
-                        )
-                        true
-                    }
-                    else -> false
-                }
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)*/
     }
 
     private fun initRcView() = with(binding) {
@@ -74,28 +50,40 @@ class DaysFragment : Fragment(), DaysAdapter.Listener {
         ab?.title = getString(R.string.days)
         rcViewDays.layoutManager = LinearLayoutManager(activity as AppCompatActivity)
         rcViewDays.adapter = adapter
-        adapter.submitList(fillDaysArray())
+
+        if (!model.currentUsername.isNullOrEmpty()) {
+            Log.d("DaysFragment", "currentUsername = ${model.currentUsername} → načítám dayList")
+            adapter.submitList(fillDaysArray())
+        } else {
+            Log.e("DaysFragment", "currentUsername je null → NEVOLÁM fillDaysArray()")
+        }
     }
 
     private fun fillDaysArray(): ArrayList<DayModel> {
         val exerciseArray = resources.getStringArray(R.array.day_exercise)
 
-        if (model.dayList.isEmpty() || model.dayList.size != exerciseArray.size) {
-            model.dayList.clear()
-            exerciseArray.forEachIndexed { index, exStr ->
-                model.dayList.add(DayModel(exStr, index + 1, false))
-            }
-            model.saveDayList()
+        model.loadDayList()
+
+        if (model.dayList.isNotEmpty() && model.dayList.size == exerciseArray.size) {
+            val daysDoneCounter = model.dayList.count { it.isDone }
+            binding.pB.max = model.dayList.size
+            updateRestDaysUI(model.dayList.size - daysDoneCounter, model.dayList.size)
+            return ArrayList(model.dayList)
         }
 
-        // UI
+        // Pokud je nový plán, nebo chybné uložené údaje
+        model.dayList.clear()
+        exerciseArray.forEachIndexed { index, exStr ->
+            model.dayList.add(DayModel(exStr, index + 1, false))
+        }
+        model.saveDayList()
+
         val daysDoneCounter = model.dayList.count { it.isDone }
         binding.pB.max = model.dayList.size
         updateRestDaysUI(model.dayList.size - daysDoneCounter, model.dayList.size)
 
-        return ArrayList(model.dayList) // Kopie, abys neměnil originál, pokud bys ho někde přepsal
+        return ArrayList(model.dayList)
     }
-
 
     private fun updateRestDaysUI(restDays: Int, days: Int) = with(binding) {
         val rDays = getString(R.string.rest) + " $restDays " + getString(R.string.days_left)
@@ -122,7 +110,7 @@ class DaysFragment : Fragment(), DaysAdapter.Listener {
     override fun onClick(day: DayModel) {
         if (!day.isDone) {
             fillExerciseList(day)
-            model.currentDay = day.dayNumber - 1 // 🔧 OPRAVA - denNumber je 1-based
+            model.currentDay = day.dayNumber - 1
             FragmentManager.setFragment(
                 ExerciseListFragment.newInstance(),
                 activity as AppCompatActivity
@@ -133,9 +121,9 @@ class DaysFragment : Fragment(), DaysAdapter.Listener {
                 R.string.reset_day_left_message,
                 object : DialogManager.Listener {
                     override fun onClick() {
-                        model.savePref((day.dayNumber - 1).toString(), 0) // 🔧 OPRAVA
+                        model.savePref((day.dayNumber - 1).toString(), 0)
                         fillExerciseList(day)
-                        model.currentDay = day.dayNumber - 1 // 🔧 OPRAVA
+                        model.currentDay = day.dayNumber - 1
                         FragmentManager.setFragment(
                             ExerciseListFragment.newInstance(),
                             activity as AppCompatActivity
@@ -145,5 +133,4 @@ class DaysFragment : Fragment(), DaysAdapter.Listener {
             )
         }
     }
-
 }

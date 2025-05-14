@@ -4,25 +4,33 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.levurda.fitnessproject.utils.MainViewModel
+import com.levurda.fitnessproject.storage.UserStorage
 
 class SplashActivity : AppCompatActivity() {
-
-    private val model: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        // ✅ Inicializace pref a načtení uloženého seznamu
-        model.pref = getSharedPreferences("my_prefs", MODE_PRIVATE)
-        model.loadDayList() // 👈 tohle bylo potřeba přidat
+        val prefs = getSharedPreferences("prefs", MODE_PRIVATE)
+        val lastUsername = prefs.getString("lastUser", null)
+        val users = UserStorage.getUsers(this)
+
+        val viewModel = (application as MyApp).viewModel
+        viewModel.pref = prefs
 
         Handler(Looper.getMainLooper()).postDelayed({
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+            if (lastUsername != null && users.any { it.username == lastUsername }) {
+                viewModel.currentUsername = lastUsername
+                viewModel.loadDayList() // 🧠 musí být až po nastavení username
+
+                startActivity(Intent(this, MainActivity::class.java).apply {
+                    putExtra("username", lastUsername)
+                })
+            } else {
+                startActivity(Intent(this, LoginActivity::class.java))
+            }
             finish()
         }, 2000)
     }
