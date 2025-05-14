@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,11 +22,11 @@ import com.levurda.fitnessproject.utils.FragmentManager
 import com.levurda.fitnessproject.utils.MainViewModel
 import com.levurda.fitnessproject.utils.TimeUtils
 
-const val COUNT_DOWN_TIMER = 11000L
+const val COUNT_DOWN_TIMER = 4000L
 
 
 class WaitingFragment : Fragment() {
-
+    private var ab: ActionBar? =  null
     private lateinit var binding: WaitingFragmentBinding
     private lateinit var timer: CountDownTimer
 
@@ -42,6 +43,8 @@ class WaitingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        ab = (activity as AppCompatActivity).supportActionBar
+        ab?.title = getString(R.string.waiting)
         binding.pBar.max = COUNT_DOWN_TIMER.toInt()
         startTimer()
 

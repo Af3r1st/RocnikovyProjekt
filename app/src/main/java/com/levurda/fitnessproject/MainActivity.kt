@@ -1,25 +1,64 @@
 package com.levurda.fitnessproject
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import com.levurda.fitnessproject.fragments.DaysFragment
+import com.levurda.fitnessproject.models.User
+import com.levurda.fitnessproject.storage.UserStorage
 import com.levurda.fitnessproject.utils.FragmentManager
 
 class MainActivity : AppCompatActivity() {
+
+    private var currentUser: User? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("MainActivity", "onCreate spuštěn")
+
         setContentView(R.layout.activity_main)
 
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        // Spustíme úvodní fragment přes FragmentManager
-        FragmentManager.setFragment(DaysFragment.newInstance(), this)
+        val username = intent.getStringExtra("username")
+        Log.d("MainActivity", "Username z intentu: $username")
+
+        if (username != null) {
+            val users = UserStorage.getUsers(this)
+            currentUser = users.find { it.username == username }
+            Log.d("MainActivity", "Načtený uživatel: ${currentUser?.username}, isAdmin: ${currentUser?.isAdmin}")
+        }
+
+        if (savedInstanceState == null) {
+            FragmentManager.setFragment(DaysFragment.newInstance(), this)
+        }
     }
 
-    override fun onBackPressed() {
-        if (FragmentManager.currentFragment is DaysFragment)super.onBackPressed()
-        else FragmentManager.setFragment(DaysFragment.newInstance(), this)
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        if (currentUser?.isAdmin != true) {
+            menu?.removeItem(R.id.menu_admin_panel)
+            menu?.removeItem(R.id.menu_user_list)
+        }
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_admin_panel -> {
+                startActivity(Intent(this, AdminPanelActivity::class.java))
+                true
+            }
+            R.id.menu_user_list -> {
+                startActivity(Intent(this, UserListActivity::class.java))
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }
+

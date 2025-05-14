@@ -1,35 +1,29 @@
 package com.levurda.fitnessproject
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.os.CountDownTimer
-import androidx.activity.ComponentActivity
+import android.os.Handler
+import android.os.Looper
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import com.levurda.fitnessproject.utils.MainViewModel
 
+class SplashActivity : AppCompatActivity() {
 
-@SuppressLint("CustomSplashScreen")
-class SplashActivity : ComponentActivity() {
-    private lateinit var timer : CountDownTimer
+    private val model: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        timer = object : CountDownTimer(2000,1000){
-            override fun onTick(millisUntilFinished: Long) {
 
-            }
+        // ✅ Inicializace pref a načtení uloženého seznamu
+        model.pref = getSharedPreferences("my_prefs", MODE_PRIVATE)
+        model.loadDayList() // 👈 tohle bylo potřeba přidat
 
-            override fun onFinish() {
-                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-            }
-
-        }.start()
-
-
-      }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        timer.cancel()
+        Handler(Looper.getMainLooper()).postDelayed({
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }, 2000)
     }
-    }
+}

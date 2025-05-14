@@ -44,6 +44,13 @@ android {
 dependencies {
     implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.23")
     implementation ("androidx.fragment:fragment-ktx:1.6.2")
+    implementation ("androidx.appcompat:appcompat:1.6.1")
+    implementation ("com.google.android.material:material:1.9.0")
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.11.0")
+    implementation("com.google.code.gson:gson:2.10.1")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

@@ -3,7 +3,20 @@
     <string name="slogan">Road To dreambody</string>
     <string name="day">Day: </string>
     <string name="exercise">Exercises: </string>
+    <string name="exercises">Exercise </string>
     <string name="waiting_message">The exercise will start in: </string>
     <string name="start">Start </string>
     <string name="next">Next </string>
+    <string name="done">Done </string>
+    <string name="waiting">Be ready </string>
+    <string name="days">Training days </string>
+    <string name="trenink_completed">Training completed </string>
+    <string name="one_step">One step closer to the body of your dreams </string>
+    <string name="rest">left </string>
+    <string name="days_left">Days </string>
+    <string name="reset">Reset</string>
+    <string name="alert">Attention!</string>
+    <string name="cancel">Cancel!</string>
+    <string name="reset_days_left_message">You really want to reset all your training days?</string>
+    <string name="reset_day_left_message">You really want to reset your training day and repeat exercises?</string>
 </resources>

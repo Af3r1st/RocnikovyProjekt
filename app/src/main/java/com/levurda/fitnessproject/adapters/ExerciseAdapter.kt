@@ -20,6 +20,7 @@ class ExerciseAdapter(var listener: Listener) :
         fun setData(exercise: ExerciseModel) = with(binding) {
             tvName.text = exercise.name
             tvCount.text = exercise.time
+            chB.isChecked = exercise.isDone
 
             try {
                 when {

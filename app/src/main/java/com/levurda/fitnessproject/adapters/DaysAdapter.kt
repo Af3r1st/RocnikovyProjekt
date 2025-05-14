@@ -19,6 +19,7 @@ class DaysAdapter(var listener: Listener) : ListAdapter<DayModel, DaysAdapter.Da
             val exCounter = day.exercises.split(",")
                 .size.toString() + " " +root.context.getString(R.string.exercise)
             tvExCounter.text = exCounter
+            checkBox.isChecked = day.isDone
             itemView.setOnClickListener{
                 listener.onClick(day)
             }
