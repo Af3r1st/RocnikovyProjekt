@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.levurda.fitnessproject.fragments.DaysFragment
 import com.levurda.fitnessproject.models.User
@@ -76,6 +78,21 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
+                true
+            }
+            R.id.menu_reset_all ->{
+                // Vymazání tréninků
+                AlertDialog.Builder(this)
+                    .setTitle("Reset tréninků")
+                    .setMessage("Opravdu chceš smazat veškerý pokrok?")
+                    .setPositiveButton("Ano") { _, _ ->
+                        val viewModel = (application as MyApp).viewModel
+                        viewModel.dayList.clear()
+                        viewModel.saveDayList()
+                        FragmentManager.setFragment(DaysFragment.newInstance(), this)
+                    }
+                    .setNegativeButton("Zrušit", null)
+                    .show()
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -13,6 +13,7 @@ import com.levurda.fitnessproject.R
 import com.levurda.fitnessproject.databinding.WaitingFragmentBinding
 import com.levurda.fitnessproject.utils.FragmentManager
 import com.levurda.fitnessproject.utils.MainViewModel
+import com.levurda.fitnessproject.utils.TimeUtils
 
 class WaitingFragment : Fragment() {
 
@@ -40,9 +41,13 @@ class WaitingFragment : Fragment() {
     }
 
     private fun startTimer() {
-        timer = object : CountDownTimer(3000, 1000) {
+        val totalTime = 3000L // 3 sekund
+        binding.pBar.max = totalTime.toInt()
+
+        timer = object : CountDownTimer(totalTime, 50) {
             override fun onTick(millisUntilFinished: Long) {
-                binding.tvTimer.text = "${millisUntilFinished / 1000}"
+                binding.tvTimer.text = TimeUtils.getTime(millisUntilFinished)
+                binding.pBar.progress = (totalTime - millisUntilFinished).toInt()
             }
 
             override fun onFinish() {

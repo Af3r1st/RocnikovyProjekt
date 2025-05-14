@@ -18,6 +18,9 @@ import com.levurda.fitnessproject.utils.FragmentManager
 import com.levurda.fitnessproject.utils.MainViewModel
 import com.levurda.fitnessproject.utils.TimeUtils
 import pl.droidsonroids.gif.GifDrawable
+import android.view.GestureDetector
+import android.view.MotionEvent
+import android.view.View.OnTouchListener
 
 class ExerciseFragment : Fragment() {
 
@@ -27,6 +30,7 @@ class ExerciseFragment : Fragment() {
     private var timer: CountDownTimer? = null
     private var exList: ArrayList<ExerciseModel>? = null
     private var ab: ActionBar? = null
+    private lateinit var gestureDetector: GestureDetector
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,6 +60,32 @@ class ExerciseFragment : Fragment() {
 
         binding.bNext.setOnClickListener {
             nextExercise()
+        }
+
+        gestureDetector = GestureDetector(requireContext(), object : GestureDetector.SimpleOnGestureListener() {
+            // Only one method with correct signature must exist
+            override fun onFling(
+                e1: MotionEvent?,
+                e2: MotionEvent,
+                velocityX: Float,
+                velocityY: Float
+            ): Boolean {
+                if (e1 != null && e2 != null) {
+                    val deltaX = e2.x - e1.x
+                    val threshold = 150
+                    val velocityThreshold = 150
+                    if (Math.abs(deltaX) > threshold && Math.abs(velocityX) > velocityThreshold) {
+                        navigateBackToList()
+                        return true
+                    }
+                }
+                return false
+            }
+        })
+
+        binding.root.setOnTouchListener { _, event ->
+            gestureDetector.onTouchEvent(event)
+            true
         }
     }
 
@@ -131,6 +161,15 @@ class ExerciseFragment : Fragment() {
             imNext.setImageDrawable(GifDrawable(root.context.assets, "congratulation.gif"))
             tvNextName.text = getString(R.string.done)
         }
+    }
+
+    private fun navigateBackToList() {
+        timer?.cancel()
+        model.savePref(model.currentDay.toString(), exerciseCounter - 1)
+        FragmentManager.setFragment(
+            ExerciseListFragment.newInstance(),
+            activity as AppCompatActivity
+        )
     }
 
     override fun onDetach() {

@@ -1,10 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#08DBFB"
-    >
+    android:background="@color/blue"
+    android:orientation="vertical"
+    android:padding="16dp">
 
+    <!-- Nadpis -->
+    <TextView
+        android:id="@+id/tvAdminTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:text="Správa cviků"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
+    <!-- Seznam cviků -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvExercises"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:layout_weight="1" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Vstupy pro nový cvik -->
+    <EditText
+        android:id="@+id/etExerciseName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Název cviku"
+        android:minHeight="48dp"
+        android:padding="12dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/gray" />
+
+    <EditText
+        android:id="@+id/etExerciseTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Čas nebo počet opakování (např. 30 nebo x15)"
+        android:minHeight="48dp"
+        android:padding="12dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/gray" />
+
+    <EditText
+        android:id="@+id/etExerciseImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Obrázek/gif (např. pushup.gif)"
+        android:minHeight="48dp"
+        android:padding="12dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/gray" />
+
+    <!-- Tlačítka zarovnaná na střed -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnAddExercise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/btn_color"
+            android:textColor="@color/white"
+            android:text="Přidat" />
+
+        <Button
+            android:id="@+id/btnDeleteExercise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:background="@color/btn_color"
+            android:textColor="@color/white"
+            android:text="Smazat" />
+
+        <Button
+            android:id="@+id/btnEditExercise"
+            android:background="@color/btn_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textColor="@color/white"
+            android:text="Upravit" />
+    </LinearLayout>
+
+</LinearLayout>

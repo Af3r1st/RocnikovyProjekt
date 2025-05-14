@@ -11,7 +11,7 @@ import com.levurda.fitnessproject.R
 import com.levurda.fitnessproject.databinding.ExerciseListItemBinding
 import pl.droidsonroids.gif.GifDrawable
 
-class ExerciseAdapter(var listener: Listener) :
+class ExerciseAdapter :
     ListAdapter<ExerciseModel, ExerciseAdapter.ExerciseHolder>(MyComparator()) {
 
     class ExerciseHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -64,9 +64,5 @@ class ExerciseAdapter(var listener: Listener) :
         override fun areContentsTheSame(oldItem: ExerciseModel, newItem: ExerciseModel): Boolean {
             return oldItem == newItem
         }
-    }
-
-    interface Listener {
-        fun onClick(day: DayModel)
     }
 }
